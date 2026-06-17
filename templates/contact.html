@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/process" method="post">
+        {% csrf_token %}
+        C: <input type="number" name="C" min="1" max="100"
+        required autocomplete="off">
+        C++: <input type="number" name="C++" min="1" max="100"
+        required autocomplete="off">
+        OOPS: <input type="number" name="OOPS" min="1" max="100"
+        required autocomplete="off">
+        <input type="submit">
+    </form>
+</body>
+</html>
