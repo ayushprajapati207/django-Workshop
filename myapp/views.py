@@ -1,5 +1,8 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 # Create your views here.
 
 def Shop(request):
@@ -23,28 +26,30 @@ def deleteSession(request):
     del request.session['usrename']
     return HttpResponse("Session deleted")
 
+def contactpageprocess(request):
+    txt1 = request.POST['txt1']
+    txt2 = request.POST['txt2']
+    txt3 = request.POST['txt3']
+
+    mymsg = "Hello ",txt1," has Contact you Mobile No is ",txt2," Message is ",txt3
+
+    subject = 'Contact us From Website'
+    email_from = settings.EMAIL_HOST_USER
+
+    message = mymsg
+    recipient_list = ['nobuddy2007@gmail.com',]
+    send_mail( subject, message, email_from, recipient_list )
+    return HttpResponse("Thank you for Contacting us.")
 
 
-def process(request):
-    a = int(request.POST['C'])
-    b = int(request.POST['C++'])
-    c = int(request.POST['OOPS'])
-    total = a + b + c   
-    per = total / 3
-    d = ""
-    if per > 90 :
-        d = "O grade"
-    elif per > 80 and per <= 90:
-        d = "A Grade"
-    elif per > 70 and per <= 80:
-        d = "B Grade"
-    elif per > 60 and per <= 70:
-        d = "C Grade"
-    else:
-        d ="Failed"
-    
-    #return HttpResponse(msg)
-    return render(request,'ans.html',{'mark1':a,'mark2':b,'mark3':c,'mytotal':total,'percentage':per,'Grade':d})
+
+def mailsenddemo(request):
+    subject = 'Mail Demo'
+    message = ' Hello Myself'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = ['nobuddy2007@gmail.com',]
+    send_mail( subject, message, email_from, recipient_list )
+    return HttpResponse("Mail Sent")   
 
 
 def loginpage(request):

@@ -8,13 +8,10 @@
 <body>
     <form action="/process" method="post">
         {% csrf_token %}
-        C: <input type="number" name="C" min="1" max="100"
-        required autocomplete="off">
-        C++: <input type="number" name="C++" min="1" max="100"
-        required autocomplete="off">
-        OOPS: <input type="number" name="OOPS" min="1" max="100"
-        required autocomplete="off">
-        <input type="submit">
+        Name: <input type="text" name="txt1" />
+        Mobile : <input type="number" name="txt2" />
+        Message :<input type="text" name="txt3" />
+        <input type="submit" />
     </form>
 </body>
 </html>
