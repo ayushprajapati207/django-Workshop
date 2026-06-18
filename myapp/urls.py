@@ -5,4 +5,11 @@ urlpatterns = [
     path('',views.Shop),
     path('contact',views.formpage),
     path('process',views.process),
+    path('savesession',views.saveSession),
+    path('getsession',views.getSession),
+    path('removesession',views.deleteSession),
+    path('loginpage',views.loginpage),
+    path('dashboard',views.dashboard),
+    path('loginprocess',views.loginprocess),
+    path('logout',views.logout)
 ]

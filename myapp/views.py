@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 # Create your views here.
 
@@ -7,6 +7,23 @@ def Shop(request):
 
 def formpage(request):
     return render(request,"contact.html")
+
+def saveSession(request):
+    request.session['username'] = "Krishna"
+    return HttpResponse("Session Created")
+
+def getSession(request):
+    if request.session.has_key('username') :
+        msg = request.session['username']
+        return HttpResponse(msg)
+    else:
+        return HttpResponse("Session does not exixt")
+
+def deleteSession(request):
+    del request.session['usrename']
+    return HttpResponse("Session deleted")
+
+
 
 def process(request):
     a = int(request.POST['C'])
@@ -30,4 +47,22 @@ def process(request):
     return render(request,'ans.html',{'mark1':a,'mark2':b,'mark3':c,'mytotal':total,'percentage':per,'Grade':d})
 
 
+def loginpage(request):
+    return render(request,'login.html')
+
+def loginprocess(request):
+    txt = request.POST['txt1']
+    request.session['myname'] = txt
+    return redirect(dashboard)
+
+def dashboard(request):
+    if request.session.has_key('myname'):
+        return render(request,'dashboard.html')
+    else:
+        return redirect(loginpage)
     
+def logout(request):
+    del request.session['myname']
+    return redirect(loginpage)
+
+
