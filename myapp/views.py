@@ -77,9 +77,18 @@ def addstudent(request):
 def studentprocess(request):
     txt1 = request.POST['txt1']
     txt2 = request.POST['txt2']
-    txt3 = request.POST['txt3']
+    email = request.POST['txt3']
     txt4 = request.POST['txt4']
-    student.objects.create(name=txt1,mobile=txt2,email=txt3,address=txt4)
-    return HttpResponse("Thank You")
+    student.objects.create(name=txt1,mobile=txt2,email=email,address=txt4)
+    return HttpResponse("Thank You for signing in")
+
+def displaystudent(request):
+    mystudentlist = student.objects.all()
+    return render(request,'display-student.html',{'mydata': mystudentlist})
+
+def deletestudent(request,id):
+    stud = student.objects.get(id=id)
+    stud.delete()
+    return redirect('display_student')
 
 

@@ -15,4 +15,7 @@ urlpatterns = [
     path('process',views.contactpageprocess),
     path('addstudent',views.addstudent),
     path('student-process',views.studentprocess),
+    path('display-student',views.displaystudent,name='display_student'),
+    path('delete-student/<int:id>',views.deletestudent,name='delete_student'),
+
 ]
