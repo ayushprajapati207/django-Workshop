@@ -13,4 +13,6 @@ urlpatterns = [
     path('logout',views.logout),
     path('maildemo',views.mailsenddemo),
     path('process',views.contactpageprocess),
+    path('addstudent',views.addstudent),
+    path('student-process',views.studentprocess),
 ]

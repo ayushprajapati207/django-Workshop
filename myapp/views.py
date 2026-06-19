@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from . models import student
 # Create your views here.
 
 def Shop(request):
@@ -69,5 +70,16 @@ def dashboard(request):
 def logout(request):
     del request.session['myname']
     return redirect(loginpage)
+
+def addstudent(request):
+    return render(request,'add-student.html')
+
+def studentprocess(request):
+    txt1 = request.POST['txt1']
+    txt2 = request.POST['txt2']
+    txt3 = request.POST['txt3']
+    txt4 = request.POST['txt4']
+    student.objects.create(name=txt1,mobile=txt2,email=txt3,address=txt4)
+    return HttpResponse("Thank You")
 
 
