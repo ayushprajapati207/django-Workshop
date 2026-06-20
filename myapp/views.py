@@ -3,11 +3,15 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from . models import student
+from . models import student,Category,Product
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 # Create your views here.
 
 def Shop(request):
-    return render(request,"shop.html")
+    all_products = Product.objects.all()
+    return render(request, 'shop.html', {'products': all_products}) 
 
 def formpage(request):
     return render(request,"contact.html")
@@ -53,24 +57,6 @@ def mailsenddemo(request):
     return HttpResponse("Mail Sent")   
 
 
-def loginpage(request):
-    return render(request,'login.html')
-
-def loginprocess(request):
-    txt = request.POST['txt1']
-    request.session['myname'] = txt
-    return redirect(dashboard)
-
-def dashboard(request):
-    if request.session.has_key('myname'):
-        return render(request,'dashboard.html')
-    else:
-        return redirect(loginpage)
-    
-def logout(request):
-    del request.session['myname']
-    return redirect(loginpage)
-
 def addstudent(request):
     return render(request,'add-student.html')
 
@@ -90,5 +76,78 @@ def deletestudent(request,id):
     stud = student.objects.get(id=id)
     stud.delete()
     return redirect('display_student')
+
+
+
+
+
+def register_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+            return redirect('register')
+
+        User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+
+        messages.success(request, "Registration Successful")
+        return redirect('login')
+
+    return render(request, 'register.html')
+
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid Username or Password")
+
+    return render(request, 'login.html')
+
+
+def home_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    return render(request, 'home.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+
+def add_category(request):
+    if request.method == "POST":
+        txt1 = request.POST['txt1']
+        Category.objects.create(title=txt1)
+        return redirect('add_category')
+    return render(request, 'add-category.html')
+
+
+def display_category(request):
+    categorylist = Category.objects.all()
+    return render (request,'display-category.html',{'category': categorylist})
+
+
+
 
 
